@@ -1,0 +1,86 @@
+@font-face {
+  font-family: 'Barcade';
+  src:
+  url('../assets/fonts/Barcade.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+h1 {
+  font-family: Barcade;
+  font-size: 50px;
+}
+
+#home {
+  display: grid;
+  place-items: center;
+}
+
+body {
+  height: 100%;
+  /*background-image: url("../assets/bg/wall.jpg");*/
+  background-color: blueviolet;
+
+}
+
+.game {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  padding: 15px;
+  background-color: #ff3b30;
+  border-radius: 10px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 80px 80px 80px 80px;
+  grid-template-rows: 80px 80px 80px 80px;
+  border: 1px solid black;
+}
+
+.grid button {
+  background-color: #cfcfcf;
+  color: blue;
+  font-size: 24px;
+  font-weight: bold;
+  border: 1px solid black;
+  outline: none;
+  cursor: pointer;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.footer button {
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  padding: 5px;
+  width: 80px;
+  background-color: yellow;
+  color: blue;
+  outline: none;
+  cursor: pointer;
+}
+
+.footer button:hover {
+  color: yellow;
+  background-color: blue;
+}
+
+.footer span {
+  flex: 1;
+  text-align: center;
+  font-size: 20px;
+  color: yellow;
+  font-weight: bold;
+  margin: auto 0;
+}
