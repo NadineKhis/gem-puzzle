@@ -11,16 +11,12 @@ h1 {
   font-size: 50px;
 }
 
-#home {
+body {
   display: grid;
   place-items: center;
-}
-
-body {
   height: 100%;
   /*background-image: url("../assets/bg/wall.jpg");*/
   background-color: blueviolet;
-
 }
 
 .game {
