@@ -117,7 +117,7 @@ class Game {
   }
 
   tick() {
-    this.setState({ time: this.state.time + 1 });
+    // this.setState({ time: this.state.time + 1 });
   }
 
   setState(newState) {
@@ -148,11 +148,12 @@ class Game {
           });
         }
       }
+      console.log('ji00000')
     }.bind(this);
   }
 
   render() {
-    const { grid, move, time, status } = this.state;
+    let { grid, move, time, status } = this.state;
 
     // Render grid
     const newGrid = document.createElement("div");
@@ -160,25 +161,108 @@ class Game {
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 4; j++) {
         const button = document.createElement("button");
+        button.textContent = grid[i][j] === 0 ? "" : grid[i][j].toString();
+          const dragStart = function () {
+              setTimeout(() => {
+                  this.classList.add('hide')
+              }, 0)
+          }
+          const dragEnd = function () {
+              this.classList.remove('hide')
+          }
+          const dragOver = function (evt) {
+              evt.preventDefault();
+              // console.log('over')
+          }
+          const dragEnter = function (evt) {
+              evt.preventDefault();
+              console.log('enter')
+              this.classList.add('hovered')
+          }
+          const dragLeave = function () {
+              console.log('leave')
+              this.classList.remove('hovered')
+          }
+          const dragDrop = function () {
+              console.log('drop')
+              this.handleClickBox(new Box(j, i))
+              button.click()
+              // поменять местами
+              // let box = new Box(j, i)
+              // const nextdoorBoxes = box.getNextdoorBoxes();
+              // const blankBox = nextdoorBoxes.find(
+              //     nextdoorBox => this.state.grid[nextdoorBox.y][nextdoorBox.x] === 0
+              // );
+              // if (blankBox) {
+              //     const newGrid = [...this.state.grid];
+              //     swapBoxes(newGrid, box, blankBox);
+              //     if (isSolved(newGrid)) {
+              //         clearInterval(this.tickId);
+              //         this.setState({
+              //             status: "won",
+              //             grid: newGrid,
+              //             move: this.state.move + 1
+              //         });
+              //     } else {
+              //         this.setState({
+              //             grid: newGrid,
+              //             move: this.state.move + 1
+              //         });
+              //     }
+              // }
+              // this.replace(button)
+              this.classList.remove('hovered')
+          }
+        if (button.textContent === '') {
+            button.className = "blank"
+            button.addEventListener('dragover', dragOver)
+            button.addEventListener('dragenter', dragEnter)
+            button.addEventListener('dragleave', dragLeave)
+            button.addEventListener('drop', dragDrop)
 
-        if (status === "playing") {
-          button.addEventListener("click", this.handleClickBox(new Box(j, i)));
+        } else {
+            button.className = "card"
+            button.setAttribute('draggable', true)
+            button.addEventListener('dragstart', dragStart)
+            button.addEventListener('dragend', dragEnd)
         }
 
-        button.textContent = grid[i][j] === 0 ? "" : grid[i][j].toString();
+        if (status === "playing") {
+            // console.log(chip)
+            button.addEventListener("click", this.handleClickBox(new Box(j, i)));
+        }
+
         newGrid.appendChild(button);
       }
     }
     document.querySelector(".grid").replaceWith(newGrid);
 
-    // Render button
+    function start_timer()
+    {
+      // if (time) clearInterval(time);
+
+      let End=0;
+      let secs = 0;
+      document.getElementById('time').innerHTML = secs + ' сек.';
+      let time = setInterval(
+          function () {
+            if (End==1) return;
+            secs++;
+            document.getElementById('time').innerHTML = secs + ' сек.';
+          },
+          1000        );
+    }
+
+    // Render play button
     const newButton = document.createElement("button");
     if (status === "ready") newButton.textContent = "Play";
     if (status === "playing") newButton.textContent = "Reset";
     if (status === "won") newButton.textContent = "Play";
     newButton.addEventListener("click", () => {
-      clearInterval(this.tickId);
-      this.tickId = setInterval(this.tick, 1000);
+      // clearInterval(this.tickId);
+      let watch = document.getElementById('time')
+      this.tickId = setInterval(start_timer, 1000);
+      // watch = setInterval(start_timer, 1000);
       this.setState(State.start());
     });
     document.querySelector(".footer button").replaceWith(newButton);
@@ -187,7 +271,7 @@ class Game {
     document.getElementById("move").textContent = `Move: ${move}`;
 
     // Render time
-    document.getElementById("time").textContent = `Time: ${time}`;
+    // document.getElementById("time").textContent = `Time: ${time}`;
 
     // Render message
     if (status === "won") {
@@ -199,3 +283,4 @@ class Game {
 }
 
 const GAME = Game.ready();
+
