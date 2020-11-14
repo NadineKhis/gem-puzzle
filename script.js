@@ -172,7 +172,6 @@ class Game {
           }
           const dragOver = function (evt) {
               evt.preventDefault();
-              // console.log('over')
           }
           const dragEnter = function (evt) {
               evt.preventDefault();
@@ -185,32 +184,7 @@ class Game {
           }
           const dragDrop = function () {
               console.log('drop')
-              this.handleClickBox(new Box(j, i))
-              button.click()
-              // поменять местами
-              // let box = new Box(j, i)
-              // const nextdoorBoxes = box.getNextdoorBoxes();
-              // const blankBox = nextdoorBoxes.find(
-              //     nextdoorBox => this.state.grid[nextdoorBox.y][nextdoorBox.x] === 0
-              // );
-              // if (blankBox) {
-              //     const newGrid = [...this.state.grid];
-              //     swapBoxes(newGrid, box, blankBox);
-              //     if (isSolved(newGrid)) {
-              //         clearInterval(this.tickId);
-              //         this.setState({
-              //             status: "won",
-              //             grid: newGrid,
-              //             move: this.state.move + 1
-              //         });
-              //     } else {
-              //         this.setState({
-              //             grid: newGrid,
-              //             move: this.state.move + 1
-              //         });
-              //     }
-              // }
-              // this.replace(button)
+              document.querySelector('.hide').click()
               this.classList.remove('hovered')
           }
         if (button.textContent === '') {
