@@ -1,3 +1,20 @@
+import {popupOpen} from "./js/popups.js";
+
+document.body.insertAdjacentHTML('beforeend',
+  '<div id="popup" class="popup">\n' +
+  '  <div class="popup__body">\n' +
+  '    <div class="popup__content">\n' +
+  '      <a href="" class="popup__close close-popup">&#10060;</a>\n' +
+  '      <div class="popup__title">Enter the name of the game</div>\n' +
+  '      <form>\n' +
+  '        <input id="nameGame" type="text" value="" placeholder="Name">\n' +
+  '        <input id="saveBtn" type="submit" value="ok">\n' +
+  '      </form>\n' +
+  '    </div>\n' +
+  '  </div>\n' +
+  '</div>'
+);
+
 class Box {
   constructor(x, y) {
     this.x = x;
@@ -148,7 +165,6 @@ class Game {
           });
         }
       }
-      console.log('ji00000')
     }.bind(this);
   }
 
@@ -175,15 +191,12 @@ class Game {
         }
         const dragEnter = function (evt) {
           evt.preventDefault();
-          console.log('enter')
           this.classList.add('hovered')
         }
         const dragLeave = function () {
-          console.log('leave')
           this.classList.remove('hovered')
         }
         const dragDrop = function () {
-          console.log('drop')
           document.querySelector('.hide').click()
           this.classList.remove('hovered')
         }
@@ -202,7 +215,6 @@ class Game {
         }
 
         if (status === "playing") {
-          // console.log(chip)
           button.addEventListener("click", this.handleClickBox(new Box(j, i)));
         }
 
@@ -232,14 +244,14 @@ class Game {
       } else {
         displayMinutes = minutes
       }
-      document.getElementById('time').innerHTML = 'Time: ' + displayMinutes + ':' + displaySeconds
+      document.getElementById('time').innerHTML = displayMinutes + ':' + displaySeconds
     }
+
     // Render play button
     const newButton = document.createElement("button");
     if (status === "ready") newButton.textContent = "Play";
     if (status === "playing") newButton.textContent = "Reset";
     if (status === "won") newButton.textContent = "Play";
-    let interval = null;
     newButton.addEventListener("click", () => {
       clearInterval(this.tickId);
       this.tickId = setInterval(stopWatch, 1000);
@@ -252,6 +264,24 @@ class Game {
 
     // Render time
     // document.getElementById("time").textContent = `Time: ${time}`;
+
+    // Render save button
+    const saveButton = document.createElement("button");
+    saveButton.textContent = "Save"
+
+    saveButton.addEventListener("click", (e) => {
+      popupOpen(popup, grid)
+      e.preventDefault()
+
+
+    })
+
+    let oldSave = document.body.children[1].children[2].children[1]
+    oldSave.replaceWith(saveButton)
+
+
+    // Render "save popup"
+
 
     // Render message
     if (status === "won") {
