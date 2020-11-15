@@ -106,8 +106,8 @@ class State {
 class Game {
   constructor(state) {
     this.state = state;
-    this.tickId = null;
-    this.tick = this.tick.bind(this);
+    // this.tickId = null;
+    // this.tick = this.tick.bind(this);
     this.render();
     this.handleClickBox = this.handleClickBox.bind(this);
   }
@@ -121,12 +121,12 @@ class Game {
   }
 
   setState(newState) {
-    this.state = { ...this.state, ...newState };
+    this.state = {...this.state, ...newState};
     this.render();
   }
 
   handleClickBox(box) {
-    return function() {
+    return function () {
       const nextdoorBoxes = box.getNextdoorBoxes();
       const blankBox = nextdoorBoxes.find(
         nextdoorBox => this.state.grid[nextdoorBox.y][nextdoorBox.x] === 0
@@ -135,7 +135,7 @@ class Game {
         const newGrid = [...this.state.grid];
         swapBoxes(newGrid, box, blankBox);
         if (isSolved(newGrid)) {
-          clearInterval(this.tickId);
+          // clearInterval(this.tickId);
           this.setState({
             status: "won",
             grid: newGrid,
@@ -153,7 +153,7 @@ class Game {
   }
 
   render() {
-    let { grid, move, time, status } = this.state;
+    let {grid, move, time, status} = this.state;
 
     // Render grid
     const newGrid = document.createElement("div");
@@ -162,48 +162,48 @@ class Game {
       for (let j = 0; j < 4; j++) {
         const button = document.createElement("button");
         button.textContent = grid[i][j] === 0 ? "" : grid[i][j].toString();
-          const dragStart = function () {
-              setTimeout(() => {
-                  this.classList.add('hide')
-              }, 0)
-          }
-          const dragEnd = function () {
-              this.classList.remove('hide')
-          }
-          const dragOver = function (evt) {
-              evt.preventDefault();
-          }
-          const dragEnter = function (evt) {
-              evt.preventDefault();
-              console.log('enter')
-              this.classList.add('hovered')
-          }
-          const dragLeave = function () {
-              console.log('leave')
-              this.classList.remove('hovered')
-          }
-          const dragDrop = function () {
-              console.log('drop')
-              document.querySelector('.hide').click()
-              this.classList.remove('hovered')
-          }
+        const dragStart = function () {
+          setTimeout(() => {
+            this.classList.add('hide')
+          }, 0)
+        }
+        const dragEnd = function () {
+          this.classList.remove('hide')
+        }
+        const dragOver = function (evt) {
+          evt.preventDefault();
+        }
+        const dragEnter = function (evt) {
+          evt.preventDefault();
+          console.log('enter')
+          this.classList.add('hovered')
+        }
+        const dragLeave = function () {
+          console.log('leave')
+          this.classList.remove('hovered')
+        }
+        const dragDrop = function () {
+          console.log('drop')
+          document.querySelector('.hide').click()
+          this.classList.remove('hovered')
+        }
         if (button.textContent === '') {
-            button.className = "blank"
-            button.addEventListener('dragover', dragOver)
-            button.addEventListener('dragenter', dragEnter)
-            button.addEventListener('dragleave', dragLeave)
-            button.addEventListener('drop', dragDrop)
+          button.className = "blank"
+          button.addEventListener('dragover', dragOver)
+          button.addEventListener('dragenter', dragEnter)
+          button.addEventListener('dragleave', dragLeave)
+          button.addEventListener('drop', dragDrop)
 
         } else {
-            button.className = "card"
-            button.setAttribute('draggable', true)
-            button.addEventListener('dragstart', dragStart)
-            button.addEventListener('dragend', dragEnd)
+          button.className = "card"
+          button.setAttribute('draggable', true)
+          button.addEventListener('dragstart', dragStart)
+          button.addEventListener('dragend', dragEnd)
         }
 
         if (status === "playing") {
-            // console.log(chip)
-            button.addEventListener("click", this.handleClickBox(new Box(j, i)));
+          // console.log(chip)
+          button.addEventListener("click", this.handleClickBox(new Box(j, i)));
         }
 
         newGrid.appendChild(button);
@@ -211,32 +211,38 @@ class Game {
     }
     document.querySelector(".grid").replaceWith(newGrid);
 
-    function start_timer()
-    {
-      // if (time) clearInterval(time);
+    let seconds = 0;
+    let minutes = 0;
+    let displaySeconds = 0;
+    let displayMinutes = 0;
 
-      let End=0;
-      let secs = 0;
-      document.getElementById('time').innerHTML = secs + ' сек.';
-      let time = setInterval(
-          function () {
-            if (End==1) return;
-            secs++;
-            document.getElementById('time').innerHTML = secs + ' сек.';
-          },
-          1000        );
+    function stopWatch() {
+      seconds++;
+      if (seconds / 60 === 1) {
+        seconds = 0;
+        minutes++
+      }
+      if (seconds < 10) {
+        displaySeconds = "0" + seconds.toString()
+      } else {
+        displaySeconds = seconds
+      }
+      if (minutes < 10) {
+        displayMinutes = "0" + minutes.toString()
+      } else {
+        displayMinutes = minutes
+      }
+      document.getElementById('time').innerHTML = 'Time: ' + displayMinutes + ':' + displaySeconds
     }
-
     // Render play button
     const newButton = document.createElement("button");
     if (status === "ready") newButton.textContent = "Play";
     if (status === "playing") newButton.textContent = "Reset";
     if (status === "won") newButton.textContent = "Play";
+    let interval = null;
     newButton.addEventListener("click", () => {
-      // clearInterval(this.tickId);
-      let watch = document.getElementById('time')
-      this.tickId = setInterval(start_timer, 1000);
-      // watch = setInterval(start_timer, 1000);
+      clearInterval(this.tickId);
+      this.tickId = setInterval(stopWatch, 1000);
       this.setState(State.start());
     });
     document.querySelector(".footer button").replaceWith(newButton);

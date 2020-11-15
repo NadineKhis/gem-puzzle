@@ -48,7 +48,6 @@ body {
 }
 
 .blank {
-  /*visibility: hidden;*/
   opacity: 0;
 }
 
@@ -57,10 +56,8 @@ body {
 }
 
 .hovered {
-  /*visibility: visible;*/
   background-color: #541a17;
   opacity: 0.4;
-
 }
 
 .grid button:hover {
