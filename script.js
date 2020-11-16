@@ -1,4 +1,4 @@
-import {popupOpen} from "./js/popups.js";
+import {savePopupOpen, loadPopupOpen} from "./js/popups.js";
 
 document.body.insertAdjacentHTML('beforeend',
   '<div id="popup" class="popup">\n' +
@@ -10,10 +10,27 @@ document.body.insertAdjacentHTML('beforeend',
   '        <input id="nameGame" type="text" value="" placeholder="Name">\n' +
   '        <input id="saveBtn" type="submit" value="ok">\n' +
   '      </form>\n' +
+  '      <div class="popup__text">(same name will overwrite the existing game)</div>\n' +
   '    </div>\n' +
   '  </div>\n' +
   '</div>'
 );
+
+document.body.insertAdjacentHTML('beforeend',
+  '<div id="loadPopup" class="popup">\n' +
+  '  <div class="popup__body">\n' +
+  '    <div class="popup__content">\n' +
+  '      <a href="" class="popup__close close-popup-load">&#10060;</a>\n' +
+  '      <div class="popup__title">Select game</div>\n' +
+  '      <ul id="savesList">\n' +
+  '      </ul>\n' +
+  // '      <button>Load</button>\n' +
+  '    </div>\n' +
+  '  </div>\n' +
+  '</div>'
+);
+
+
 
 class Box {
   constructor(x, y) {
@@ -124,7 +141,7 @@ class Game {
   constructor(state) {
     this.state = state;
     // this.tickId = null;
-    // this.tick = this.tick.bind(this);
+    // this.stopWatch = this.stopWatch.bind(this);
     this.render();
     this.handleClickBox = this.handleClickBox.bind(this);
   }
@@ -156,17 +173,18 @@ class Game {
           this.setState({
             status: "won",
             grid: newGrid,
-            move: this.state.move + 1
+            move: parseInt(this.state.move) + 1
           });
         } else {
           this.setState({
             grid: newGrid,
-            move: this.state.move + 1
+            move: parseInt(this.state.move)  + 1
           });
         }
       }
     }.bind(this);
   }
+
 
   render() {
     let {grid, move, time, status} = this.state;
@@ -247,6 +265,8 @@ class Game {
       document.getElementById('time').innerHTML = displayMinutes + ':' + displaySeconds
     }
 
+
+
     // Render play button
     const newButton = document.createElement("button");
     if (status === "ready") newButton.textContent = "Play";
@@ -262,25 +282,27 @@ class Game {
     // Render move
     document.getElementById("move").textContent = `Move: ${move}`;
 
-    // Render time
-    // document.getElementById("time").textContent = `Time: ${time}`;
-
     // Render save button
     const saveButton = document.createElement("button");
     saveButton.textContent = "Save"
 
     saveButton.addEventListener("click", (e) => {
-      popupOpen(popup, grid)
+      savePopupOpen(grid)
       e.preventDefault()
-
-
     })
 
     let oldSave = document.body.children[1].children[2].children[1]
     oldSave.replaceWith(saveButton)
 
-
-    // Render "save popup"
+    // Render load
+    const loadButton = document.createElement("button");
+    loadButton.textContent = "Load"
+    loadButton.addEventListener("click", (e) => {
+      loadPopupOpen()
+      e.preventDefault()
+    })
+    let oldLoad = document.body.children[1].children[2].children[2]
+    oldLoad.replaceWith(loadButton)
 
 
     // Render message
@@ -292,5 +314,16 @@ class Game {
   }
 }
 
+function loadGame(e, gameState) {
+  e.preventDefault()
+  const reset = document.querySelector('.footer button')
+  reset.click()
+  new Game(gameState.state)
+
+  // let a = setInterval(stopWatch, 1000);
+
+}
+
 const GAME = Game.ready();
+export {loadGame, State}
 

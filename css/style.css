@@ -159,6 +159,7 @@ body {
   color: #000;
   padding: 10px;
   position: relative;
+  text-align: center;
 }
 
 .popup__content form {
@@ -171,12 +172,39 @@ body {
   font-size: 19px;
 }
 
+.popup__text {
+  margin-top: 1em;
+  text-align: center;
+  font-size: 14px;
+}
+
 .popup__close {
   position: absolute;
   right: 10px;
   top: 10px;
   font-size: 20px;
   text-decoration: none;
+}
+
+.popup__close:hover {
+  transition: all 0.8s ease 0s;
+  transform: rotate(90deg);
+}
+
+#savesList {
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
+  padding: 0;
+}
+
+#savesList a {
+  margin-top: 5px;
+  text-decoration: none;
+}
+
+#savesList a:hover {
+  color: red;
 }
 
 @media screen and (max-width: 400px) {
