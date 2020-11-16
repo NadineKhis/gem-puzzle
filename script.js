@@ -265,8 +265,6 @@ class Game {
       document.getElementById('time').innerHTML = displayMinutes + ':' + displaySeconds
     }
 
-
-
     // Render play button
     const newButton = document.createElement("button");
     if (status === "ready") newButton.textContent = "Play";
@@ -304,7 +302,6 @@ class Game {
     let oldLoad = document.body.children[1].children[2].children[2]
     oldLoad.replaceWith(loadButton)
 
-
     // Render message
     if (status === "won") {
       document.querySelector(".message").textContent = "You win!";
@@ -319,9 +316,6 @@ function loadGame(e, gameState) {
   const reset = document.querySelector('.footer button')
   reset.click()
   new Game(gameState.state)
-
-  // let a = setInterval(stopWatch, 1000);
-
 }
 
 const GAME = Game.ready();

@@ -3,7 +3,6 @@ import {loadGame, State} from "../script.js";
 let allSaves = []
 
 function savePopupOpen(grid) {
-  // console.log(currentPopup)
   const currentPopup = document.getElementById('popup')
   currentPopup.classList.add('open')
   currentPopup.style.visibility = 'visible'
@@ -36,7 +35,6 @@ function savePopupOpen(grid) {
 function loadPopupOpen() {
   let saves = localStorage.getItem('gem-saves')
   const list = document.getElementById('savesList')
-  console.log(saves)
   if (saves) {
     let listOfSaves = saves.split(',')
     listOfSaves.forEach((name) => {
@@ -44,17 +42,14 @@ function loadPopupOpen() {
     })
     let games = document.querySelectorAll('.saves')
     games.forEach(x => x.addEventListener("click", (e) => {
-      console.log(x.innerHTML)
       loadGame(e, JSON.parse(localStorage.getItem(`${x.innerHTML}`)))
     }))
-    console.log(games)
   } else {
     list.insertAdjacentHTML('afterbegin', `<p>There's no saved games</p>`)
   }
   const currentPopup = document.getElementById('loadPopup')
   currentPopup.classList.add('open')
   currentPopup.style.visibility = 'visible'
-  console.log('load')
   const closeBtn = document.querySelector('.close-popup-load')
   closeBtn.addEventListener("click", (e) => {
     popupClose(e, currentPopup)
